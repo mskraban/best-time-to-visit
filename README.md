@@ -86,4 +86,4 @@ The hosted site uses [Vercel Web Analytics](https://vercel.com/docs/analytics) t
 
 ## ⚖️ Notes
 
-Weather data: NASA POWER. Fonts: Bricolage Grotesque and Figtree (SIL Open Font License), hosted with the site. Use the weather as a guide, not a guarantee, and check the forecast, local events and prices before you book.
+Weather data: NASA POWER. Fonts: Sora and DM Sans (SIL Open Font License), hosted with the site. Use the weather as a guide, not a guarantee, and check the forecast, local events and prices before you book.
