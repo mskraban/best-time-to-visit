@@ -112,11 +112,11 @@ export function scoreMonth(mo, profileKey, shift = 0) {
 
 /**
  * People who live in or expect a warm climate are comfortable at warmer temperatures, so the comfortable range for city and
- * outdoor trips moves with the place's yearly mean temperature (up to 8 C warmer, up to 3 C cooler than the default).
+ * outdoor trips moves with the place's yearly mean temperature (up to 10 C warmer, up to 3 C cooler than the default).
  */
 export function comfortShift(c) {
   const mean = c.m.reduce((a, b) => a + b, 0) / 12
-  return Math.max(-3, Math.min(8, 0.6 * (mean - 16)))
+  return Math.max(-3, Math.min(10, 0.8 * (mean - 16)))
 }
 
 export function scoreAll(c, profileKey) {
@@ -194,7 +194,7 @@ export function describe(c, name, { ski = false } = {}) {
   const hi = Math.round(hHi), lo = Math.round(hLo)
   const temps = lo === hi ? `${lo}°C (${toF(lo)}°F)` : `${lo}–${hi}°C (${toF(lo)}–${toF(hi)}°F)`
   const lead =
-    maxScore >= 50
+    maxScore >= 35
       ? `The best time to visit ${name} is ${monthLabel(bm)}, when daytime highs are around ${temps} and rainfall is ${rainAvg < 40 ? 'low' : rainAvg < 100 ? 'moderate' : 'high'}.`
       : `${name} has no ideal season for sightseeing. ${monthLabel(bm)} ${bm.length === 1 ? 'comes' : 'come'} closest, with daytime highs around ${temps}.`
   return { months, scores, best, worst, hottest, coldest, wettest, driest, lead, annualRain: Math.round(annualRain), maxScore }
