@@ -4,12 +4,12 @@
 
 **When is the best time to visit? Weather by month for 700 cities and travel destinations, one page for each.**
 
-[![Live site](https://img.shields.io/badge/live-LIVE_HOST-0b4f6c?style=for-the-badge&logo=vercel&logoColor=white)](LIVE_URL)
+[![Live site](https://img.shields.io/badge/live-best--time--to--visit.vercel.app-0b4f6c?style=for-the-badge&logo=vercel&logoColor=white)](https://best-time-to-visit.vercel.app)
 [![Built with Nuxt](https://img.shields.io/badge/Nuxt-4-00dc82?style=for-the-badge&logo=nuxt&logoColor=white)](https://nuxt.com)
 [![Data: NASA POWER](https://img.shields.io/badge/data-NASA_POWER-0b3d91?style=for-the-badge)](https://power.larc.nasa.gov/)
 [![No database](https://img.shields.io/badge/no_database-no_cookies-f59e0b?style=for-the-badge)](#-privacy-and-analytics)
 
-[**Open the site →**](LIVE_URL)
+[**Open the site →**](https://best-time-to-visit.vercel.app)
 
 <img src="docs/city.jpg" alt="Best time to visit Lisbon: summary, trip type tabs and a comfort score chart" width="760">
 
