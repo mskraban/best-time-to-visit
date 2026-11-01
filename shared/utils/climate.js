@@ -179,7 +179,7 @@ export function describe(c, name, { ski = false } = {}) {
   const best = {}
   const worst = {}
   for (const k of profiles) {
-    scores[k] = months.map((mo) => scoreMonth(mo, k))
+    scores[k] = scoreAll(c, k)
     best[k] = bestMonths(scores[k])
     worst[k] = worstMonths(scores[k])
   }
