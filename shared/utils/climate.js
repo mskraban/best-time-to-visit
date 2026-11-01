@@ -86,14 +86,14 @@ export function monthAt(c, i) {
 }
 
 export const PROFILES = {
-  city: { key: 'city', label: 'Sightseeing', short: 'City breaks', blurb: 'comfortable for walking around: mild, not too wet, some sun', lo: 17, hi: 24, tol: 8, rainCap: 120, w: [0.5, 0.3, 0.2] },
-  warm: { key: 'warm', label: 'Sun and warmth', short: 'Beach and sun', blurb: 'hot, dry and sunny, for beaches and pools', lo: 26, hi: 32, tol: 10, rainCap: 100, w: [0.45, 0.25, 0.3] },
-  outdoors: { key: 'outdoors', label: 'Hiking and outdoors', short: 'Hiking', blurb: 'cool to mild and dry, good for long days on foot', lo: 12, hi: 21, tol: 8, rainCap: 90, w: [0.45, 0.35, 0.2] },
+  city: { key: 'city', label: 'Sightseeing', short: 'City breaks', blurb: 'comfortable for walking around: mild, not too wet, some sun', lo: 15, hi: 24, tol: 8, rainCap: 220, adapt: true, w: [0.5, 0.3, 0.2] },
+  warm: { key: 'warm', label: 'Sun and warmth', short: 'Beach and sun', blurb: 'hot, dry and sunny, for beaches and pools', lo: 26, hi: 32, tol: 10, rainCap: 180, w: [0.45, 0.25, 0.3] },
+  outdoors: { key: 'outdoors', label: 'Hiking and outdoors', short: 'Hiking', blurb: 'cool to mild and dry, good for long days on foot', lo: 12, hi: 21, tol: 8, rainCap: 180, adapt: true, w: [0.45, 0.35, 0.2] },
   ski: { key: 'ski', label: 'Skiing', short: 'Skiing', blurb: 'cold enough for reliable snow, with enough precipitation', w: [0, 0, 0] },
 }
 
 /** Comfort score 0-100 for one month and trip type. */
-export function scoreMonth(mo, profileKey) {
+export function scoreMonth(mo, profileKey, shift = 0) {
   const p = PROFILES[profileKey]
   const sun = clamp01((100 - mo.cloud) / 60)
   if (profileKey === 'ski') {
@@ -101,7 +101,8 @@ export function scoreMonth(mo, profileKey) {
     const snowy = clamp01(mo.rain / 60)
     return Math.round(100 * cold * (0.35 + 0.45 * snowy + 0.2 * sun))
   }
-  const dist = mo.feels < p.lo ? p.lo - mo.feels : mo.feels > p.hi ? mo.feels - p.hi : 0
+  const lo = p.lo + shift, hi = p.hi + shift
+  const dist = mo.feels < lo ? lo - mo.feels : mo.feels > hi ? mo.feels - hi : 0
   const temp = clamp01(1 - dist / p.tol)
   const dry = clamp01(1 - mo.rain / p.rainCap)
   const windFactor = 1 - clamp01((mo.wind - 25) / 40) * 0.25
@@ -109,8 +110,18 @@ export function scoreMonth(mo, profileKey) {
   return Math.round(100 * (p.w[0] * temp + p.w[1] * dry + p.w[2] * sun) * (0.35 + 0.65 * temp) * windFactor)
 }
 
+/**
+ * People who live in or expect a warm climate are comfortable at warmer temperatures, so the comfortable range for city and
+ * outdoor trips moves with the place's yearly mean temperature (up to 8 C warmer, up to 3 C cooler than the default).
+ */
+export function comfortShift(c) {
+  const mean = c.m.reduce((a, b) => a + b, 0) / 12
+  return Math.max(-3, Math.min(8, 0.6 * (mean - 16)))
+}
+
 export function scoreAll(c, profileKey) {
-  return MONTHS.map((_, i) => scoreMonth(monthAt(c, i), profileKey))
+  const shift = PROFILES[profileKey] && PROFILES[profileKey].adapt ? comfortShift(c) : 0
+  return MONTHS.map((_, i) => scoreMonth(monthAt(c, i), profileKey, shift))
 }
 
 export function verdict(score) {
@@ -180,9 +191,11 @@ export function describe(c, name, { ski = false } = {}) {
   const rainAvg = Math.round(sel.reduce((s, m) => s + m.rain, 0) / sel.length)
   const maxScore = Math.max(...scores.city)
   const annualRain = months.reduce((s, m) => s + m.rain, 0)
+  const hi = Math.round(hHi), lo = Math.round(hLo)
+  const temps = lo === hi ? `${lo}°C (${toF(lo)}°F)` : `${lo}–${hi}°C (${toF(lo)}–${toF(hi)}°F)`
   const lead =
-    maxScore >= 65
-      ? `The best time to visit ${name} is ${monthLabel(bm)}, when daytime highs are around ${Math.round(hLo)}${hLo === hHi ? '' : '–' + Math.round(hHi)}°C (${toF(hLo)}${hLo === hHi ? '' : '–' + toF(hHi)}°F) and rainfall is ${rainAvg < 40 ? 'low' : rainAvg < 90 ? 'moderate' : 'high'}.`
-      : `${name} has no perfect season for sightseeing. ${monthLabel(bm)} come closest, with daytime highs around ${Math.round(hLo)}${hLo === hHi ? '' : '–' + Math.round(hHi)}°C (${toF(hLo)}${hLo === hHi ? '' : '–' + toF(hHi)}°F).`
+    maxScore >= 50
+      ? `The best time to visit ${name} is ${monthLabel(bm)}, when daytime highs are around ${temps} and rainfall is ${rainAvg < 40 ? 'low' : rainAvg < 100 ? 'moderate' : 'high'}.`
+      : `${name} has no ideal season for sightseeing. ${monthLabel(bm)} ${bm.length === 1 ? 'comes' : 'come'} closest, with daytime highs around ${temps}.`
   return { months, scores, best, worst, hottest, coldest, wettest, driest, lead, annualRain: Math.round(annualRain), maxScore }
 }
