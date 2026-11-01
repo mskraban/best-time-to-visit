@@ -1,0 +1,22 @@
+{
+  "name": "best-time-to-visit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "When is the best time to visit any city or destination? Weather by month and a comfort score, one page per place.",
+  "scripts": {
+    "dev": "nuxt dev",
+    "climate": "node scripts/fetch-climate.mjs",
+    "build": "node scripts/fetch-climate.mjs && nuxt generate",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "nuxt": "latest",
+    "vue": "latest"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}
