@@ -86,9 +86,9 @@ export function monthAt(c, i) {
 }
 
 export const PROFILES = {
-  city: { key: 'city', label: 'Sightseeing', short: 'City breaks', blurb: 'comfortable for walking around: mild, not too wet, some sun', lo: 15, hi: 24, tol: 8, rainCap: 220, adapt: true, w: [0.5, 0.3, 0.2] },
-  warm: { key: 'warm', label: 'Sun and warmth', short: 'Beach and sun', blurb: 'hot, dry and sunny, for beaches and pools', lo: 26, hi: 32, tol: 10, rainCap: 180, w: [0.45, 0.25, 0.3] },
-  outdoors: { key: 'outdoors', label: 'Hiking and outdoors', short: 'Hiking', blurb: 'cool to mild and dry, good for long days on foot', lo: 12, hi: 21, tol: 8, rainCap: 180, adapt: true, w: [0.45, 0.35, 0.2] },
+  city: { key: 'city', label: 'Sightseeing', short: 'City breaks', blurb: 'comfortable for walking around: mild, not too wet, some sun', lo: 16, hi: 24, tol: 8, rainCap: 170, adapt: true, w: [0.5, 0.3, 0.2] },
+  warm: { key: 'warm', label: 'Sun and warmth', short: 'Beach and sun', blurb: 'hot, dry and sunny, for beaches and pools', lo: 26, hi: 32, tol: 10, rainCap: 150, w: [0.45, 0.25, 0.3] },
+  outdoors: { key: 'outdoors', label: 'Hiking and outdoors', short: 'Hiking', blurb: 'cool to mild and dry, good for long days on foot', lo: 12, hi: 21, tol: 8, rainCap: 150, adapt: true, w: [0.45, 0.35, 0.2] },
   ski: { key: 'ski', label: 'Skiing', short: 'Skiing', blurb: 'cold enough for reliable snow, with enough precipitation', w: [0, 0, 0] },
 }
 

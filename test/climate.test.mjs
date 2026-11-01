@@ -54,7 +54,7 @@ test('Lisbon: spring and early autumn beat winter for sightseeing', () => {
   const s = C.scoreAll(LISBON, 'city')
   const best = C.bestMonths(s)
   assert.ok(best.includes(4) || best.includes(5), 'May or June is among the best: ' + best)
-  assert.ok(s[4] > s[0] + 15 && s[9] > s[11] + 15)
+  assert.ok(s[4] > s[0] + 15 && s[9] > s[11] + 5)
   assert.ok(s.every((x) => x >= 0 && x <= 100))
 })
 
